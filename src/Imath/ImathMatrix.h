@@ -81,9 +81,7 @@ public:
     ///
     ///     a[0][0] a[0][1]
     ///     a[1][0] a[1][1]
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (const T a[2][2])
-        IMATH_NOEXCEPT;
-
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix22 (const T a[2][2]) IMATH_NOEXCEPT;
     /// Construct from given scalar values:
     ///
     ///     a b
@@ -407,13 +405,11 @@ public:
     ///     a a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (T a) IMATH_NOEXCEPT;
 
-    /// Construct from 3x3 array
+    /// Construct from 3x3 array 
     ///     a[0][0] a[0][1] a[0][2]
     ///     a[1][0] a[1][1] a[1][2]
     ///     a[2][0] a[2][1] a[2][2]
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (const T a[3][3])
-        IMATH_NOEXCEPT;
-
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix33 (const T a[3][3]) IMATH_NOEXCEPT;
     /// Construct from given scalar values
     ///     a b c
     ///     d e f
@@ -838,14 +834,12 @@ public:
     ///     a a a a
     IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (T a) IMATH_NOEXCEPT;
 
-    /// Construct from 4x4 array
+    /// Construct from 4x4 array 
     ///     a[0][0] a[0][1] a[0][2] a[0][3]
     ///     a[1][0] a[1][1] a[1][2] a[1][3]
     ///     a[2][0] a[2][1] a[2][2] a[2][3]
     ///     a[3][0] a[3][1] a[3][2] a[3][3]
-    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (const T a[4][4])
-        IMATH_NOEXCEPT;
-
+    IMATH_HOSTDEVICE IMATH_CONSTEXPR14 Matrix44 (const T a[4][4]) IMATH_NOEXCEPT;
     /// Construct from given scalar values
     ///     a b c d
     ///     e f g h
