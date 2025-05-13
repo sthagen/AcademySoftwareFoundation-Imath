@@ -1,15 +1,37 @@
-#!@PYTHON@
+#/usr/bin/env python3
 
 #
 # SPDX-License-Identifier: BSD-3-Clause
 # Copyright Contributors to the OpenEXR Project.
 #
 
-from pybindimath import *
-#from imath import *
+import os
+import sys
+from pathlib import Path
+
+print(f"{__file__}: PYTHONPATH={os.environ['PYTHONPATH']}")
+pythonpath = os.environ.get('PYTHONPATH')
+if pythonpath:
+    # Use os.pathsep which is ':' on Unix/macOS and ';' on Windows
+    paths = pythonpath.split(os.pathsep)
+    for path in paths:
+        if not path:
+            continue
+        resolved_path = Path(path).expanduser().resolve()
+        print(f"Contents of: {resolved_path}")
+        if resolved_path.is_dir():
+            for root, dirs, files in os.walk(resolved_path):
+                for f in files:
+                    file_path = Path(root) / f
+                    print(f"  {file_path}")
+        else:
+            print(f"  [Not a directory or does not exist]")
+        print()
+
+from imath import *
 from math import sqrt, pi, sin, cos
 import math
-import string, traceback, sys
+import string, traceback
 import random
 
 testList = []
@@ -19,14 +41,14 @@ testList = []
 # -----------------------------------------------------------------
 
 ArrayBaseType = {}
-#ArrayBaseType[V2sArray] = V2s
-#ArrayBaseType[V2iArray] = V2i
-#ArrayBaseType[V2fArray] = V2f
-#ArrayBaseType[V2dArray] = V2d
-#ArrayBaseType[V3sArray] = V3s
-#ArrayBaseType[V3iArray] = V3i
-#ArrayBaseType[V3fArray] = V3f
-#ArrayBaseType[V3dArray] = V3d
+ArrayBaseType[V2sArray] = V2s
+ArrayBaseType[V2iArray] = V2i
+ArrayBaseType[V2fArray] = V2f
+ArrayBaseType[V2dArray] = V2d
+ArrayBaseType[V3sArray] = V3s
+ArrayBaseType[V3iArray] = V3i
+ArrayBaseType[V3fArray] = V3f
+ArrayBaseType[V3dArray] = V3d
 
 VecBaseType = {}
 VecBaseType[V2s] = int
@@ -826,7 +848,7 @@ def testSlicesOnArray():
     
     print ("ok")
     
-#testList.append (('testSlicesOnArray',testSlicesOnArray))
+testList.append (('testSlicesOnArray',testSlicesOnArray))
 
 def testNonMaskedFloatTypeArray(FloatTypeArray):
     f1 = FloatTypeArray(5)
@@ -932,8 +954,8 @@ def testNonMaskedFloatTypeArray(FloatTypeArray):
 
     print ("ok")
 
-#testList.append(('testNonMaskedFloatArray', lambda : testNonMaskedFloatTypeArray(FloatArray)))
-#testList.append(('testNonMaskedDoubleArray', lambda : testNonMaskedFloatTypeArray(DoubleArray)))
+testList.append(('testNonMaskedFloatArray', lambda : testNonMaskedFloatTypeArray(FloatArray)))
+testList.append(('testNonMaskedDoubleArray', lambda : testNonMaskedFloatTypeArray(DoubleArray)))
 
 def testNonMaskedIntTypeArray(IntTypeArray):
     f1 = IntTypeArray(5)
@@ -1041,8 +1063,8 @@ def testNonMaskedIntTypeArray(IntTypeArray):
 
     print ("ok")
 
-#testList.append(('testNonMaskedIntArray', lambda : testNonMaskedIntTypeArray(IntArray)))
-#testList.append(('testNonMaskedShortArray', lambda : testNonMaskedIntTypeArray(ShortArray)))
+testList.append(('testNonMaskedIntArray', lambda : testNonMaskedIntTypeArray(IntArray)))
+testList.append(('testNonMaskedShortArray', lambda : testNonMaskedIntTypeArray(ShortArray)))
 #testList.append(('testNonMaskedUnsignedCharArray', lambda : testNonMaskedIntTypeArray(UnsignedCharArray))) # arithmetic tests will fail this
 
 def testMaskedFloatTypeArray(FloatTypeArray):
@@ -1189,8 +1211,8 @@ def testMaskedFloatTypeArray(FloatTypeArray):
 
     print ("ok")
 
-#testList.append(('testMaskedFloatArray', lambda : testMaskedFloatTypeArray(FloatArray)))
-#testList.append(('testMaskedDoubleArray', lambda : testMaskedFloatTypeArray(DoubleArray)))
+testList.append(('testMaskedFloatArray', lambda : testMaskedFloatTypeArray(FloatArray)))
+testList.append(('testMaskedDoubleArray', lambda : testMaskedFloatTypeArray(DoubleArray)))
 
 
 def testMaskedIntTypeArray(IntTypeArray):
@@ -1339,8 +1361,8 @@ def testMaskedIntTypeArray(IntTypeArray):
 
     print ("ok")
 
-#testList.append(('testMaskedIntArray', lambda : testMaskedIntTypeArray(IntArray)))
-#testList.append(('testMaskedShortArray', lambda : testMaskedIntTypeArray(ShortArray)))
+testList.append(('testMaskedIntArray', lambda : testMaskedIntTypeArray(IntArray)))
+testList.append(('testMaskedShortArray', lambda : testMaskedIntTypeArray(ShortArray)))
 
 def testNonMaskedVecTypeArray(VecTypeArray):
     base_type = ArrayBaseType[VecTypeArray]
@@ -1526,14 +1548,14 @@ def testNonMaskedVecTypeArray(VecTypeArray):
 
     print ("ok")
 
-#testList.append(('testNonMaskedV2sArray', lambda : testNonMaskedVecTypeArray(V2sArray)))
-#testList.append(('testNonMaskedV2iArray', lambda : testNonMaskedVecTypeArray(V2iArray)))
-#testList.append(('testNonMaskedV2fArray', lambda : testNonMaskedVecTypeArray(V2fArray)))
-#testList.append(('testNonMaskedV2dArray', lambda : testNonMaskedVecTypeArray(V2dArray)))
-#testList.append(('testNonMaskedV3sArray', lambda : testNonMaskedVecTypeArray(V3sArray)))
-#testList.append(('testNonMaskedV3iArray', lambda : testNonMaskedVecTypeArray(V3iArray)))
-#testList.append(('testNonMaskedV3fArray', lambda : testNonMaskedVecTypeArray(V3fArray)))
-#testList.append(('testNonMaskedV3dArray', lambda : testNonMaskedVecTypeArray(V3dArray)))
+testList.append(('testNonMaskedV2sArray', lambda : testNonMaskedVecTypeArray(V2sArray)))
+testList.append(('testNonMaskedV2iArray', lambda : testNonMaskedVecTypeArray(V2iArray)))
+testList.append(('testNonMaskedV2fArray', lambda : testNonMaskedVecTypeArray(V2fArray)))
+testList.append(('testNonMaskedV2dArray', lambda : testNonMaskedVecTypeArray(V2dArray)))
+testList.append(('testNonMaskedV3sArray', lambda : testNonMaskedVecTypeArray(V3sArray)))
+testList.append(('testNonMaskedV3iArray', lambda : testNonMaskedVecTypeArray(V3iArray)))
+testList.append(('testNonMaskedV3fArray', lambda : testNonMaskedVecTypeArray(V3fArray)))
+testList.append(('testNonMaskedV3dArray', lambda : testNonMaskedVecTypeArray(V3dArray)))
 
 
 def testMaskedVecTypeArray(VecTypeArray):
@@ -1767,12 +1789,12 @@ def testMaskedVecTypeArray(VecTypeArray):
 
     print ("ok")
 
-#testList.append(('testMaskedV2sArray', lambda : testMaskedVecTypeArray(V2sArray)))
-#testList.append(('testMaskedV2iArray', lambda : testMaskedVecTypeArray(V2iArray)))
-#testList.append(('testMaskedV2fArray', lambda : testMaskedVecTypeArray(V2fArray)))
-#testList.append(('testMaskedV2dArray', lambda : testMaskedVecTypeArray(V2dArray)))
-#testList.append(('testMaskedV3fArray', lambda : testMaskedVecTypeArray(V3fArray)))
-#testList.append(('testMaskedV3dArray', lambda : testMaskedVecTypeArray(V3dArray)))
+testList.append(('testMaskedV2sArray', lambda : testMaskedVecTypeArray(V2sArray)))
+testList.append(('testMaskedV2iArray', lambda : testMaskedVecTypeArray(V2iArray)))
+testList.append(('testMaskedV2fArray', lambda : testMaskedVecTypeArray(V2fArray)))
+testList.append(('testMaskedV2dArray', lambda : testMaskedVecTypeArray(V2dArray)))
+testList.append(('testMaskedV3fArray', lambda : testMaskedVecTypeArray(V3fArray)))
+testList.append(('testMaskedV3dArray', lambda : testMaskedVecTypeArray(V3dArray)))
 
 
 # -------------------------------------------------------------------------
@@ -1854,7 +1876,7 @@ def testFun ():
 
     return
 
-#testList.append (('testFun',testFun))
+testList.append (('testFun',testFun))
 
 
 # -------------------------------------------------------------------------
@@ -1864,7 +1886,7 @@ def testV2x (Vec):
     
     # Constructors (and element access).
 
-    v = Vec(0)
+    v = Vec()
     assert v[0] == 0 and v[1] == 0
 
     v = Vec(1)
@@ -1886,8 +1908,6 @@ def testV2x (Vec):
     # Repr.
 
     v = Vec(1/9., 2/9.)
-    vv = eval(repr(v))
-    d = v - vv
     assert v == eval(repr(v))
 
     # Sequence length.
@@ -2623,7 +2643,7 @@ def testV2Array ():
     print ("V2dArray")
     testV2xArray (V2dArray, V2d, DoubleArray)
 
-#testList.append (('testV2Array',testV2Array))
+testList.append (('testV2Array',testV2Array))
 
 
 # -------------------------------------------------------------------------
@@ -3401,7 +3421,7 @@ def testV3Array ():
     print ("V3dArray")
     testV3xArray (V3dArray, V3d, DoubleArray)
 
-#testList.append (('testV3Array',testV3Array))
+testList.append (('testV3Array',testV3Array))
 
 
 # -------------------------------------------------------------------------
@@ -4240,7 +4260,7 @@ def testV4Array ():
     print ("V4dArray")
     testV4xArray (V4dArray, V4d, DoubleArray)
 
-#testList.append (('testV4Array',testV4Array))
+testList.append (('testV4Array',testV4Array))
 
 def testV4xConversions (Vec):
 
@@ -4634,7 +4654,7 @@ def testShear6 ():
     print ("Shear6d")
     testShear6x (Shear6d)
 
-#testList.append (('testShear6',testShear6))
+testList.append (('testShear6',testShear6))
 
 
 # -------------------------------------------------------------------------
@@ -4688,7 +4708,7 @@ def testShearConversions ():
     return
 
 
-#testList.append (('testShearConversions',testShearConversions))
+testList.append (('testShearConversions',testShearConversions))
 
 
 # -------------------------------------------------------------------------
@@ -5023,7 +5043,7 @@ def testM22 ():
     print ("M22d")
     testM22x (M22d, V2d)
 
-#testList.append (('testM22',testM22))
+testList.append (('testM22',testM22))
 
 
 # -------------------------------------------------------------------------
@@ -5655,7 +5675,7 @@ def testM33 ():
     print ("M33d")
     testM33x (M33d, V2d, V3d)
 
-#testList.append (('testM33',testM33))
+testList.append (('testM33',testM33))
 
 
 # -------------------------------------------------------------------------
@@ -6416,7 +6436,7 @@ def testM44 ():
     print ("M44d")
     testM44x (M44d, V3d)
 
-#testList.append (('testM44',testM44))
+testList.append (('testM44',testM44))
 
 
 # -------------------------------------------------------------------------
@@ -6684,7 +6704,7 @@ def testMatConversions ():
     return
 
 
-#testList.append (('testMatConversions',testMatConversions))
+testList.append (('testMatConversions',testMatConversions))
 
 
 # -------------------------------------------------------------------------
@@ -6770,7 +6790,7 @@ def testBox2():
     testBox2x (Box2d, V2d)
 
 
-#testList.append (('testBox2',testBox2))
+testList.append (('testBox2',testBox2))
 
 
 # -------------------------------------------------------------------------
@@ -6885,7 +6905,7 @@ def testBox3():
     testBox3x (Box3d, V3d)
 
 
-#testList.append (('testBox3',testBox3))
+testList.append (('testBox3',testBox3))
 
 
 # -------------------------------------------------------------------------
@@ -6966,7 +6986,7 @@ def testBoxConversions ():
     return
 
 
-#testList.append (('testBoxConversions',testBoxConversions))
+testList.append (('testBoxConversions',testBoxConversions))
 
 
 # -------------------------------------------------------------------------
@@ -7255,7 +7275,7 @@ def testQuat():
     testQuatConversions()
 
 
-#testList.append (('testQuat',testQuat))
+testList.append (('testQuat',testQuat))
 
 
 # -------------------------------------------------------------------------
@@ -7572,7 +7592,7 @@ def testEuler():
     print("EulerdArray")
     testEulerArrays(Eulerd, EulerdArray, QuatdArray, V3d, V3dArray)
 
-#testList.append (('testEuler',testEuler))
+testList.append (('testEuler',testEuler))
 
 
 # -------------------------------------------------------------------------
@@ -7713,7 +7733,7 @@ def testLine3():
     testLine3Conversions()
 
 
-#testList.append (('testLine3',testLine3))
+testList.append (('testLine3',testLine3))
 
 
 # -------------------------------------------------------------------------
@@ -7841,7 +7861,7 @@ def testPlane3():
     testPlane3Conversions()
 
 
-#testList.append (('testPlane3',testPlane3))
+testList.append (('testPlane3',testPlane3))
 
 
 # -------------------------------------------------------------------------
@@ -8014,7 +8034,7 @@ def testColor3 ():
     print ("Color3c")
     testColor3x (Color3c, 255)
 
-#testList.append (('testColor3',testColor3))
+testList.append (('testColor3',testColor3))
 
 
 # -------------------------------------------------------------------------
@@ -8188,7 +8208,7 @@ def testColor4 ():
     print ("Color4c")
     testColor4x (Color4c, 255)
 
-#testList.append (('testColor4',testColor4))
+testList.append (('testColor4',testColor4))
 
 
 # -------------------------------------------------------------------------
@@ -8260,7 +8280,7 @@ def testColorConversions ():
     return
 
 
-#testList.append (('testColorConversions',testColorConversions))
+testList.append (('testColorConversions',testColorConversions))
 
 
 # -------------------------------------------------------------------------
@@ -8553,7 +8573,7 @@ def testFrustum ():
     print ("Frustumf")
     testFrustumx (Frustumf, Plane3f, V2f, V3f, M44f)
 
-#testList.append (('testFrustum',testFrustum))
+testList.append (('testFrustum',testFrustum))
 
 def testFrustumTest ():
 
@@ -8579,7 +8599,7 @@ def testFrustumTest ():
 
     t.completelyContains(Box3f())
                 
-#testList.append (('testFrustumTest',testFrustumTest))
+testList.append (('testFrustumTest',testFrustumTest))
                 
 # -------------------------------------------------------------------------
 # Tests for random number generators
@@ -8679,7 +8699,7 @@ def testRandom ():
     print ("Rand48")
     testRandomx (Rand48)
     
-#testList.append (('testRandom',testRandom))
+testList.append (('testRandom',testRandom))
 
 # -------------------------------------------------------------------------
 # Tests C4xArrays
@@ -8751,7 +8771,7 @@ def testC4Array ():
     print ("C4cArray")
     testC4xArray (C4cArray, Color4c, UnsignedCharArray)
 
-#testList.append (('testC4Array',testC4Array))
+testList.append (('testC4Array',testC4Array))
 
 # -------------------------------------------------------------------------
 # Tests C3xArrays
@@ -8842,7 +8862,7 @@ def testC3Array ():
     print ("C3cArray")
     testC3xArray (C3cArray, Color3c, UnsignedCharArray)
 
-#testList.append (('testC3Array',testC3Array))
+testList.append (('testC3Array',testC3Array))
 
 # -------------------------------------------------------------------------
 # Verify that floating-point exceptions, both in Imath and in Python,
@@ -8881,7 +8901,7 @@ def testFpExceptions():
     print ("ok")
     return
 
-#testList.append (('testFpExceptions',testFpExceptions))
+testList.append (('testFpExceptions',testFpExceptions))
 
 def testProcrustes():
     m = M44d()
@@ -8928,7 +8948,7 @@ def testProcrustes():
         res = f[i] * result
         assert ((res - t[i]).length2() < 1e-5)
    
-#testList.append (('testProcrustes',testProcrustes))
+testList.append (('testProcrustes',testProcrustes))
 
 def testSVD():
     # We'll just test the Python wrapper here; for comprehensive SVD tests,
@@ -9046,7 +9066,7 @@ def testSVD():
     m = m * e.toMatrix33()
     checkSVD33(m)
 
-#testList.append (('testSVD',testSVD))
+testList.append (('testSVD',testSVD))
 
 def testSymmetricEigensolve():
     # We'll just test the Python wrapper here; for comprehensive eigensolver tests,
@@ -9133,7 +9153,7 @@ def testSymmetricEigensolve():
 
 
 
-#testList.append (('testSymmetricEigensolve',testSymmetricEigensolve))
+testList.append (('testSymmetricEigensolve',testSymmetricEigensolve))
 
 # -------------------------------------------------------------------------
 # Tests MxArrays
@@ -9249,7 +9269,7 @@ def testMatrixArray ():
     print ("M22dArray")
     testMxArray (M22dArray, M22d)
 
-#testList.append(("testMatrixArray",testMatrixArray))
+testList.append(("testMatrixArray",testMatrixArray))
 
 # -------------------------------------------------------------------------
 # Tests BoxxArrays
@@ -9326,7 +9346,7 @@ def testBoxArray ():
     print ("Box3dArray")
     testBoxxArray (Box3dArray, Box3d, V3d)
 
-#testList.append(("testBoxArray",testBoxArray))
+testList.append(("testBoxArray",testBoxArray))
 
 def testStringArray():
 
@@ -9391,7 +9411,7 @@ def testStringArray():
 
     print ("ok")
 
-#testList.append(("testStringArray",testStringArray))
+testList.append(("testStringArray",testStringArray))
 
 
 def testWstringArray():
@@ -9457,7 +9477,7 @@ def testWstringArray():
 
     print ("ok")
 
-#testList.append(("testWstringArray",testWstringArray))
+testList.append(("testWstringArray",testWstringArray))
 
 
 def testVArrays():
@@ -9673,7 +9693,7 @@ def testVArrays():
 
     # See the 'PyImath/varraySemantics.txt' document for more information.
 
-#testList.append(("testVArrays", testVArrays))
+testList.append(("testVArrays", testVArrays))
 
 
 def testReadOnlyBasic(AType, val):
@@ -9813,14 +9833,14 @@ def testReadOnlyBasic(AType, val):
 
     print ("ok")
 
-#testList.append(("testReadOnlyBasicInt",
-#                 lambda : testReadOnlyBasic(IntArray, 7)))
-#testList.append(("testReadOnlyBasicFloat",
-#                 lambda : testReadOnlyBasic(FloatArray, 1.234)))
-#testList.append(("testReadOnlyBasicV3f",
-#                 lambda : testReadOnlyBasic(V3fArray, V3f(1.2, 3.4, 5.6))))
-#testList.append(("testReadOnlyBasicV2i",
-#                 lambda : testReadOnlyBasic(V2iArray, V2i(8, 9))))
+testList.append(("testReadOnlyBasicInt",
+                 lambda : testReadOnlyBasic(IntArray, 7)))
+testList.append(("testReadOnlyBasicFloat",
+                 lambda : testReadOnlyBasic(FloatArray, 1.234)))
+testList.append(("testReadOnlyBasicV3f",
+                 lambda : testReadOnlyBasic(V3fArray, V3f(1.2, 3.4, 5.6))))
+testList.append(("testReadOnlyBasicV2i",
+                 lambda : testReadOnlyBasic(V2iArray, V2i(8, 9))))
 
 
 def testVectorVectorInPlaceArithmeticOpsReadOnly(f1, f2,
@@ -10020,16 +10040,16 @@ def testReadOnlyAutoVect(ArrayType, val1, val2):
 
     print ("ok")
 
-#testList.append(("testReadOnlyAutoVectFloat",
-#                  lambda : testReadOnlyAutoVect(FloatArray, 1.25, 5.0)))
-#testList.append(("testReadOnlyAutoVectDouble",
-#                  lambda : testReadOnlyAutoVect(DoubleArray, 3.456, 4.567)))
-#testList.append(("testReadOnlyAutoVectV3f",
-#                  lambda : testReadOnlyAutoVect(V3fArray, V3f(1.234, 2.345, 3.456),
-#                                                          V3f(4.234, 6.345, 5.456))))
-#testList.append(("testReadOnlyAutoVectV2d",
-#                  lambda : testReadOnlyAutoVect(V2dArray, V2d(3.456, 0.456),
-#                                                           V2d(4.567, 0.581))))
+testList.append(("testReadOnlyAutoVectFloat",
+                  lambda : testReadOnlyAutoVect(FloatArray, 1.25, 5.0)))
+testList.append(("testReadOnlyAutoVectDouble",
+                  lambda : testReadOnlyAutoVect(DoubleArray, 3.456, 4.567)))
+testList.append(("testReadOnlyAutoVectV3f",
+                  lambda : testReadOnlyAutoVect(V3fArray, V3f(1.234, 2.345, 3.456),
+                                                          V3f(4.234, 6.345, 5.456))))
+testList.append(("testReadOnlyAutoVectV2d",
+                  lambda : testReadOnlyAutoVect(V2dArray, V2d(3.456, 0.456),
+                                                           V2d(4.567, 0.581))))
 
 
 def testReadOnlySpecialAccess():
@@ -10313,7 +10333,7 @@ def testReadOnlySpecialAccess():
 
     print ("ok")
 
-#testList.append(("testReadOnlySpecialAccess", testReadOnlySpecialAccess))
+testList.append(("testReadOnlySpecialAccess", testReadOnlySpecialAccess))
 
 
 def testReadOnlyIndexedArrays(ArrayType, val):
@@ -10410,10 +10430,10 @@ def testReadOnlyIndexedArrays(ArrayType, val):
 
     print ("ok")
 
-#testList.append(("testReadOnlyIndexedArraysFloat",
-#                 lambda : testReadOnlyIndexedArrays(FloatArray, 1.25)))
-#testList.append(("testReadOnlyIndexedArraysV3f",
-#                 lambda : testReadOnlyIndexedArrays(V3fArray, V3f(1.25, 2, 3))))
+testList.append(("testReadOnlyIndexedArraysFloat",
+                 lambda : testReadOnlyIndexedArrays(FloatArray, 1.25)))
+testList.append(("testReadOnlyIndexedArraysV3f",
+                 lambda : testReadOnlyIndexedArrays(V3fArray, V3f(1.25, 2, 3))))
 
 
 def testReadOnlyVIntArrays():
@@ -10474,7 +10494,7 @@ def testReadOnlyVIntArrays():
 
     print ("ok")
 
-#testList.append(("testReadOnlyVIntArrays", testReadOnlyVIntArrays))
+testList.append(("testReadOnlyVIntArrays", testReadOnlyVIntArrays))
 
 
 def testReadOnlyStringArrays():
@@ -10517,7 +10537,7 @@ def testReadOnlyStringArrays():
 
     print ("ok")
 
-#testList.append(("testReadOnlyStringArrays", testReadOnlyStringArrays))
+testList.append(("testReadOnlyStringArrays", testReadOnlyStringArrays))
 
 
 def testQuatArrays():
@@ -10622,7 +10642,7 @@ def testQuatArrays():
 
     print ("ok")
 
-#testList.append(("testQuatArrays", testQuatArrays))
+testList.append(("testQuatArrays", testQuatArrays))
 
 
 def testBufferProtocol():
@@ -10689,7 +10709,7 @@ def testBufferProtocol():
 
     print ("ok")
 
-#testList.append(("Buffer protocol test", testBufferProtocol))
+testList.append(("Buffer protocol test", testBufferProtocol))
 
 def testFloatArray2D():
 
@@ -10733,7 +10753,7 @@ def testFloatArray2D():
 
     print ("ok")
 
-#testList.append(("FloatArray2D test", testFloatArray2D))
+testList.append(("FloatArray2D test", testFloatArray2D))
 
 def testColor4Array2D():
 
@@ -10777,12 +10797,15 @@ def testColor4Array2D():
 
     print ("ok")
 
-#testList.append(("Color4fArray2D test", testColor4Array2D))
+testList.append(("Color4fArray2D test", testColor4Array2D))
 
 # -------------------------------------------------------------------------
 # Main loop
 
 random.seed (1567)
+
+import imath
+print (imath.__file__)
 
 for test in testList:
     funcName = test[0]
